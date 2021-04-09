@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="shortcut icon" href="./img/logo.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;400;700&display=swap" rel="stylesheet">
+    <title>Financeiro Mobile First</title>
+</head>
+<body>
+    <!--Header-->
+    <header class="header">
+        <div class="navbg">
+          <a href="#home" class="logo"><img src="./img/logo.png" alt="logo"></a>
+         <h1>Controle Financeiro</h1>
+          <div class="nav" id="nav">
+            <i class="fas fa-times" id="fecharmenu" alt="ícone fechar menu"></i>
+            <ul>
+                <li><a href="#cadastro" id="cadastrobtn" class="navlink"><span>Cadastro de Transações</span></a></li>
+                <li><a href="#limpar" id="limparbtn" class="navlink"><span></span>Limpar dados</span></a></li>
+                <li><a href="#salvar" id="salvarbtn" >Salvar no Servidor</a></li>
+
+            </ul> 
+        </div>
+        <i class="fas fa-bars" id="abrirmenu" alt="ícone abrir menu"></i>
+       </div>
+    </header>
+    <!--formulário-->
+    <div class="conteudo">
+       <form class="formulario">
+           <h1>Nova Transação</h1>
+           <div class="formcontent">
+             <div class="trasação">
+                <label class="label">Tipo de transação</label>
+                <select id="tipotransacao">
+                  <option disable selected value="selecione">Selecione</option>
+                  <option value="1">Compra</option>
+                  <option value="2">Venda</option>
+                </select>
+                <p id="erroselect" class="erroselect">Selecione o tipo da Transação</p>
+            </div>
+            <div class="mercadoria">
+              <label class="label">Nome da mercadoria</label>
+              <input type="text" placeholder="Input" id="mercadoria" autocomplete="off">
+              <p id="erronome" class="erronome">Este campo deve estar preenchido</p>
+            </div>
+            <div class="valor">
+              <label class="label">Valor</label>
+              <input type="text" placeholder="R$ 0,00" id="valor" autocomplete="off" maxlength="13">
+              <p id="errovalor" class="errovalor">Este campo deve estar preenchido</p>
+            </div>
+          </div>
+          <button type="submit" id="adicionarbtn" class="botao">Adicionar transação</button>
+       </form>
+         <!--Extrato-->
+      <p class="semextrato">Nehnuma transação cadastrada.</p>
+      <div class="extrato">
+        <h1 class="extratoh1">Extrato de transações</h1>
+          <div class="linha1">
+              <h2>Mercadoria</h2>
+              <h2>Valor</h2>
+          </div>
+          <div class="linhas">
+               <p class="plinha"><span>+</span>Lorem ipsum dolor sit amet consectetur</p>
+               <p>R$ 12,999,99</p>
+           </div>
+           <div class="linhas">
+               <p class="plinha"><span>-</span>Quis nostrud exercitation</p>
+               <p>R$ 99,99</p>
+           </div>
+          <div class="linhas">
+               <p class="plinha"><span>+</span>Lorem ipsum</p>
+               <p>R$ 9,99</p>
+           </div>
+          <div class="ultimalinha">
+               <h2>Total </h2>
+               <h3 class="resultado" id="resultado">R$ 12,909,99</h3>
+           </div>
+          <h5 id="balanco" class="balanco">[Lucro]</h5>
+      </div>
+    </div>
+    <script src="./js/main.js"></script>
+</body>
+</html>
