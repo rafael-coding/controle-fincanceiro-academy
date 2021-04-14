@@ -27,8 +27,7 @@ $novaTransacao.moeda.addEventListener('keyup', validarValor);
 $novaTransacao.moeda.addEventListener('input',(e) => {
     e.target.value = mascaraValor(e.target.value);
 });
-$adicionarBtn.addEventListener('click', adicionarTransacao);
-
+var produtos = JSON.parse(localStorage.getItem("produtos"));
 
 // Functions
 
@@ -118,14 +117,58 @@ function mascaraValor(valorCampo) {
 
 //Validação transaççao
 function adicionarTransacao(){
-    const validacaoSelect = validarSelect();
+    let dados = {
+        inputSelect: $novaTransacao.tipoTransacao.value,
+        inputMercadoria: $novaTransacao.mercadoria.value,
+        inputValor: $novaTransacao.moeda.value,
+    };
+    localStorage.setItem('dados', JSON.stringify(dados));
+    dadosJ();
+}
+function dadosJ(){
+    console.log(JSON.parse(localStorage.getItem('dados')));
+
+};
+
+
+
+/*
+function adicionarTransacao() {
+    const validacaoTipo = validarSelect();
     const validacaoMercadoria = validarMercadoria();
     const validacaoValor = validarValor();
-    if (validacaoSelect && validacaoMercadoria && validacaoValor){
-        const inputSelect = $novaTransacao.tipoTransacao.value;
-        const inputMercadoria = $novaTransacao.mercadoria.value;
-        const inputValor = (inputSelect === 'venda')
-        ?formatarValorRealParaMaquina(novaTransacao.moeda.value.substr(3))
-        : 0 - formatarValorRealParaMaquina(novaTransacao.moeda.value.substr(3));
+    if (validacaoTipo && validacaoMercadoria && validacaoValor) {
+        const tipoTransacaoAtual = $novaTransacao.tipoTransacao.value;
+        const mercadoriaTransacaoAtual = $novaTransacao.mercadoria.value;
+        const valorTransacaoAtual = (tipoTransacaoAtual === 'venda')
+            ? formatarValorRealParaMaquina(novaTransacao.valor.value.substr(3))
+            : 0 - formatarValorRealParaMaquina(novaTransacao.valor.value.substr(3));
+        transacoes.push({
+            tipo: tipoTransacaoAtual,
+            mercadoria: mercadoriaTransacaoAtual,
+            valor: valorTransacaoAtual
+        });
+        salvarDadosLocalStorage();
+        atualizarExtrato();
+        calcularTotal();
+        //limparCampos();
     }
+} */
+
+
+/*
+adicionando, mas sobreescrevendo
+function adicionarTransacao(){
+
+    let dados = [{
+        inputSelect: $novaTransacao.tipoTransacao.value,
+        inputMercadoria: $novaTransacao.mercadoria.value,
+        inputValor: $novaTransacao.moeda.value,
+    }];
+    localStorage.setItem('dados', JSON.stringify(dados));
+    dadosJ();
 }
+function dadosJ(){
+    console.log(JSON.parse(localStorage.getItem('dados')));
+
+};  */
