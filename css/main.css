@@ -148,9 +148,10 @@ input[type=number]::-webkit-inner-spin-button{
 }
 
 .semextrato{
-    display: none;
+    display: block;
+    padding-top: 5px;
     text-align: center;
-    margin-top: 40px;
+    padding-bottom: 5px;
 }
 
 .extrato p{
@@ -361,7 +362,4 @@ input[type=number]::-webkit-inner-spin-button{
     .extrato{
         width: 40.7em;
         margin-left: 20px;
-    }
-    .semextrato{
-        margin-left: 225px;
     }

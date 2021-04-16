@@ -27,11 +27,24 @@ $novaTransacao.moeda.addEventListener('keyup', validarValor);
 $novaTransacao.moeda.addEventListener('input',(e) => {
     e.target.value = mascaraValor(e.target.value);
 });
+//chamando produtos no localStore
 var produtos = JSON.parse(localStorage.getItem("produtos"));
 if (produtos == null ) {
     produtos = []
 }
-
+/*
+function formatarValorParaUsuario(moeda) {
+    return Math.abs(moeda).toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+function formatarValorRealParaMaquina(moeda) {
+    return parseFloat(moeda.toString().replace('.', '').replace(',', '.'));
+}
+//Chamando função para reenscrever lista após o refresh
+//reescreveLista();
+*/
 
 // Functions
 
@@ -65,7 +78,8 @@ function validarMercadoria(){
     if (inputMercadoria === ''){
         $nomeErro.style.display = 'block';
         $novaTransacao.mercadoria.style.border = '1px solid red';
-        $novaTransacao.mercadoria.style.marginBottom = '0px'
+        $novaTransacao.mercadoria.style.marginBottom = '0px';
+        return false;
     } else{
         $nomeErro.style.display = 'none';
         $novaTransacao.mercadoria.style.border = '1px solid #979797';
@@ -83,12 +97,15 @@ function validarValor(){
         $novaTransacao.moeda.style.border = '1px solid red';
         $valorErro.style.marginBottom = '20px';
         $novaTransacao.moeda.style.marginBottom = '0px';
+        return false;
     } else {
         $valorErro.style.display = 'none';
         $novaTransacao.moeda.style.border = '1px solid #979797';
         $novaTransacao.moeda.style.marginBottom = '20px';
+        return true;
     }
 }
+
 
 
 //mascara de moeda
@@ -119,8 +136,17 @@ function mascaraValor(valorCampo) {
     return valorFormatado;
 }
 
-//Validação transaççao
+//Validação transaççao 
 function adicionarTransacao(){
+    validarSelect()
+    validarMercadoria()
+    validarValor()
+    if(validarMercadoria(), validarValor() == ""){
+        return false
+    } 
+    if(validarSelect() =="0"){
+        return false
+    } else{
     let dados = {
         inputSelect: $novaTransacao.tipoTransacao.value,
         inputMercadoria: $novaTransacao.mercadoria.value,
@@ -128,5 +154,5 @@ function adicionarTransacao(){
     };
     produtos.push(dados);
     localStorage.setItem('produtos', JSON.stringify(produtos));
+    }
 }
-
