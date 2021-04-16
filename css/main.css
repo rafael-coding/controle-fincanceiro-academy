@@ -146,18 +146,19 @@ input[type=number]::-webkit-inner-spin-button{
     text-align: center;
     margin-bottom: 19px;
 }
-
-.semextrato{
-    display: block;
-    padding-top: 5px;
-    text-align: center;
-    padding-bottom: 5px;
-}
-
+/*
 .extrato p{
     margin-right: 10px;
     color: #000000;
     font-size: 14px;
+}
+*/
+.valorex{
+    margin-right: 10px;
+    color: #000000;
+    font-size: 14px;
+    text-align: right;
+    width: 200px;
 }
 
 .extrato h2{
@@ -169,10 +170,9 @@ input[type=number]::-webkit-inner-spin-button{
 }
 
 .plinha{
-    width: 240px;
-    display: flex;
     font-size: 14px;
     color: #000000;
+    width: inherit;
 }
 
 .linha1{
@@ -267,7 +267,11 @@ input[type=number]::-webkit-inner-spin-button{
         float: right;
     }
 }
+.extrato h2{
+    margin-right: 20px;
+    margin-left: 20px;
 
+}
 /*-------------------responsivo desktop---------------------*/
 @media(min-width: 1112px){
     /*header*/
@@ -328,7 +332,9 @@ input[type=number]::-webkit-inner-spin-button{
         width: 25em ;
         display: block;
         padding-bottom: 20px;
-        margin:initial
+        margin:initial;
+        height: 324px;
+
     }
     .formcontent{
         display: block;

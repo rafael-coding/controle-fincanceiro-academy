@@ -16,6 +16,7 @@ const $selectErro = document.querySelector('#erroselect');
 const $nomeErro = document.querySelector('#erronome');
 const $valorErro = document.querySelector('#errovalor');
 const $adicionarBtn = document.querySelector('#adicionarbtn');
+const $semExtrato = document.querySelector('#psemextrato')
 
 
 //Variáveis globais e listeners
@@ -27,11 +28,13 @@ $novaTransacao.moeda.addEventListener('keyup', validarValor);
 $novaTransacao.moeda.addEventListener('input',(e) => {
     e.target.value = mascaraValor(e.target.value);
 });
+
 //chamando produtos no localStore
 var produtos = JSON.parse(localStorage.getItem("produtos"));
 if (produtos == null ) {
     produtos = []
 }
+
 /*
 function formatarValorParaUsuario(moeda) {
     return Math.abs(moeda).toLocaleString('pt-BR', {
@@ -42,9 +45,10 @@ function formatarValorParaUsuario(moeda) {
 function formatarValorRealParaMaquina(moeda) {
     return parseFloat(moeda.toString().replace('.', '').replace(',', '.'));
 }
-//Chamando função para reenscrever lista após o refresh
-//reescreveLista();
 */
+//Chamando função para reenscrever lista após o refresh
+reescreveLista();
+
 
 // Functions
 
@@ -138,21 +142,48 @@ function mascaraValor(valorCampo) {
 
 //Validação transaççao 
 function adicionarTransacao(){
+         //validando o form para o local Storage
     validarSelect()
     validarMercadoria()
     validarValor()
-    if(validarMercadoria(), validarValor() == ""){
+    if(validarValor() == ""){
+        return false
+    } 
+    if(validarMercadoria() == ""){
         return false
     } 
     if(validarSelect() =="0"){
         return false
     } else{
+        //setando produtos no localStorage
     let dados = {
         inputSelect: $novaTransacao.tipoTransacao.value,
         inputMercadoria: $novaTransacao.mercadoria.value,
         inputValor: $novaTransacao.moeda.value,
     };
     produtos.push(dados);
+    reescreveLista()
     localStorage.setItem('produtos', JSON.stringify(produtos));
+    }
+}
+
+
+        //Reescrevendo o extrato
+function reescreveLista(){
+    document.querySelector("#extratolinhas").innerHTML = ''
+    for (let i = 0; i < produtos.length; i ++){
+    var sinais = "+"
+     if(produtos[i].inputSelect=="1"){
+        sinais = "-"
+     }        
+     if(produtos.length >= 0){
+        document.querySelector(".extratoh1").innerHTML =`Extrato de Transações.`
+    }  
+    document.querySelector("#extratolinhas").innerHTML += `
+    <div class="linhas" id="linhas">
+    <span>` + sinais +`</span><p class="plinha">`+ produtos[i].inputMercadoria +`</p>
+       <p class="valorex">` + produtos[i].inputValor + `</p>
+       </div>
+    `;
     }
 }
