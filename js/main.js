@@ -135,6 +135,15 @@ function mascaraValor(valorCampo) {
 
 }
 
+function limparDados(){
+    var confir = window.confirm(`ATENÇÃO!\nEssa ação irá apagar todos os dados de transações!\nDeseja continuar?`)
+    if(confir == true){
+    localStorage.clear();
+    }
+    produtos = [];
+    reescreveLista()
+}
+
 //Validação transaççao 
 function adicionarTransacao(){
     //validando o form para o local Storage
@@ -159,10 +168,13 @@ function adicionarTransacao(){
     produtos.push(dados);
     reescreveLista()
     localStorage.setItem('produtos', JSON.stringify(produtos));
+    document.querySelector(".formulario").reset();
     }
 
     somaExtrato()
+    
 }
+
 
 //somar extrato para aparecer lucro ou prejuízo
 function somaExtrato(){
