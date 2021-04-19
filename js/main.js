@@ -35,20 +35,8 @@ if (produtos == null ) {
     produtos = []
 }
 
-/*
-function formatarValorParaUsuario(moeda) {
-    return Math.abs(moeda).toLocaleString('pt-BR', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-}
-function formatarValorRealParaMaquina(moeda) {
-    return parseFloat(moeda.toString().replace('.', '').replace(',', '.'));
-}
-*/
 //Chamando função para reenscrever lista após o refresh
 reescreveLista();
-
 
 // Functions
 
@@ -109,9 +97,6 @@ function validarValor(){
         return true;
     }
 }
-
-
-
 //mascara de moeda
 function mascaraValor(valorCampo) {
     valorCampo = valorCampo.toString().replace(/\D/g, '');
@@ -135,14 +120,19 @@ function mascaraValor(valorCampo) {
             const resto = valorFormatado.substr(0, valorFormatado.length - 6);
             valorFormatado = resto + '.' + ultimosSeis;
         }
+        if(valorFormatado.length >= 11){
+            const ultimosdez = valorFormatado.substr(-10);
+            const resto = valorFormatado.substr(0, valorFormatado.length - 10);
+            valorFormatado = resto + '.' + ultimosdez;
+        }
         valorFormatado = 'R$ ' + valorFormatado;
     }
     return valorFormatado;
-}
+} 
 
 //Validação transaççao 
 function adicionarTransacao(){
-         //validando o form para o local Storage
+    //validando o form para o local Storage
     validarSelect()
     validarMercadoria()
     validarValor()
@@ -155,7 +145,7 @@ function adicionarTransacao(){
     if(validarSelect() =="0"){
         return false
     } else{
-        //setando produtos no localStorage
+    //setando produtos no localStorage
     let dados = {
         inputSelect: $novaTransacao.tipoTransacao.value,
         inputMercadoria: $novaTransacao.mercadoria.value,
@@ -165,10 +155,26 @@ function adicionarTransacao(){
     reescreveLista()
     localStorage.setItem('produtos', JSON.stringify(produtos));
     }
+
+    somaExtrato()
+}
+
+//somar extrato para aparecer lucro ou prejuízo
+function somaExtrato(){
+    var total = 0
+    for (let i = 0; i < produtos.length; i ++) {
+        let valorSomado = parseFloat(produtos[i].inputValor.replace(/\./g, "").replace(/,/g, "."))
+         if(produtos[i].inputSelect != "2") {
+             valorSomado *= -1
+         }
+         total += total + valorSomado
+    }
+    return total
+    console.log(total)
 }
 
 
-        //Reescrevendo o extrato
+//Reescrevendo o extrato
 function reescreveLista(){
     document.querySelector("#extratolinhas").innerHTML = ''
     for (let i = 0; i < produtos.length; i ++){
@@ -180,10 +186,22 @@ function reescreveLista(){
         document.querySelector(".extratoh1").innerHTML =`Extrato de Transações.`
     }  
     document.querySelector("#extratolinhas").innerHTML += `
-    <div class="linhas" id="linhas">
+    <div class="linhas" id="linhas" onclick="removeItem(event, ` + i + `)">
     <span>` + sinais +`</span><p class="plinha">`+ produtos[i].inputMercadoria +`</p>
        <p class="valorex">` + produtos[i].inputValor + `</p>
        </div>
     `;
     }
+    total = somaExtrato()
+    document.querySelector('.resultado').innerHTML = total
 }
+
+function removeItem(evt, index){
+    //Splice remove um item da lista
+    produtos.splice(index, 1);
+
+    //salvando as remoções dos itens no localStorage pra atualizar a lista automaticamente
+    localStorage.setItem('produtos',JSON.stringify(produtos));
+    reescreveLista();
+}
+
