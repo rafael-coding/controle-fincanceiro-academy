@@ -17,6 +17,7 @@ const $nomeErro = document.querySelector('#erronome');
 const $valorErro = document.querySelector('#errovalor');
 const $adicionarBtn = document.querySelector('#adicionarbtn');
 const $semExtrato = document.querySelector('#psemextrato')
+const $prejuizoVermelho = document.querySelector('#balanco')
 
 
 //Variáveis globais e listeners
@@ -97,38 +98,42 @@ function validarValor(){
         return true;
     }
 }
+
 //mascara de moeda
 function mascaraValor(valorCampo) {
     valorCampo = valorCampo.toString().replace(/\D/g, '');
     valorCampo = parseInt(valorCampo.replace(/[.,]/g, '')).toString();
-    let valorFormatado = '';
-    if (valorCampo === '0' || valorCampo === 'NaN') {
-        valorFormatado = '';
+    let valor_pronto = '';
+    if (valorCampo === '0') {
+        valor_pronto = '';
     } else if (valorCampo.length === 1) {
-        valorFormatado += '00' + valorCampo;
+        valor_pronto += '00' + valorCampo;
     } else if (valorCampo.length === 2) {
-        valorFormatado += '0' + valorCampo;
+        valor_pronto += '0' + valorCampo;
     } else {
-        valorFormatado = valorCampo;
+        valor_pronto = valorCampo;
     }
-    if (valorFormatado.length > 0) {
-        const doisUltimos = valorFormatado.substr(-2);
-        const resto = valorFormatado.substr(0, valorFormatado.length - 2);
-        valorFormatado = resto + ',' + doisUltimos;
-        if (valorFormatado.length >= 7) {
-            const ultimosSeis = valorFormatado.substr(-6);
-            const resto = valorFormatado.substr(0, valorFormatado.length - 6);
-            valorFormatado = resto + '.' + ultimosSeis;
+    if (valor_pronto.length > 0) {
+        const doisUltimos = valor_pronto.substr(-2);
+        const resto = valor_pronto.substr(0, valor_pronto.length - 2);
+        valor_pronto = resto + ',' + doisUltimos;
+        if (valor_pronto.length >= 7) {
+            const ultimosSeis = valor_pronto.substr(-6);
+            
+            const resto = valor_pronto.substr(0, valor_pronto.length - 6);
+
+            valor_pronto = resto + '.' + ultimosSeis;
         }
-        if(valorFormatado.length >= 11){
-            const ultimosdez = valorFormatado.substr(-10);
-            const resto = valorFormatado.substr(0, valorFormatado.length - 10);
-            valorFormatado = resto + '.' + ultimosdez;
+        if (valor_pronto.length >= 11){
+            const ultimosdez = valor_pronto.substr(-10);
+            const resto = valor_pronto.substr(0, valor_pronto.length - 10);
+            valor_pronto = resto + '.' + ultimosdez;
         }
-        valorFormatado = 'R$ ' + valorFormatado;
+        valor_pronto = 'R$ ' + valor_pronto;
     }
-    return valorFormatado;
-} 
+    return  valor_pronto;
+
+}
 
 //Validação transaççao 
 function adicionarTransacao(){
@@ -161,18 +166,18 @@ function adicionarTransacao(){
 
 //somar extrato para aparecer lucro ou prejuízo
 function somaExtrato(){
-    var total = 0
+    var total = 0;
     for (let i = 0; i < produtos.length; i ++) {
-        let valorSomado = parseFloat(produtos[i].inputValor.replace(/\./g, "").replace(/,/g, "."))
+        //Replace R$ VOCÊ NÃO PODE SOMAR LETRAS RAFAEL!!!
+        let valorSomado = parseFloat(produtos[i].inputValor.replace(/\./g, "").replace(/\,/g, ".").replace('R$ ',''));
          if(produtos[i].inputSelect != "2") {
-             valorSomado *= -1
+             valorSomado *= -1;
          }
-         total += total + valorSomado
+         total = total + valorSomado
     }
     return total
-    console.log(total)
+    
 }
-
 
 //Reescrevendo o extrato
 function reescreveLista(){
@@ -193,7 +198,21 @@ function reescreveLista(){
     `;
     }
     total = somaExtrato()
-    document.querySelector('.resultado').innerHTML = total
+    lucroOuPrejuizo = "0"
+
+    if(total < 0 ){
+        lucroOuPrejuizo = "PREJUÍZO"
+        $prejuizoVermelho.style.color = 'red';
+    }if(total > 0){
+        lucroOuPrejuizo = "LUCRO"
+        $prejuizoVermelho.style.color = 'black';
+    }
+    total_escrito = "R$ "
+    total_escrito += total.toLocaleString("pt-BR",)
+    total_escrito = total_escrito.replace("-", "")
+
+    document.querySelector('.resultado').innerHTML = total_escrito
+    document.querySelector('#balanco').innerHTML = "[" + lucroOuPrejuizo + "]"
 }
 
 function removeItem(evt, index){
